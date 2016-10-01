@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Yaoxian Qu & Xuanrui Qi
+	# Copyright (c) 2016 Yaoxian Qu & Xuanrui Qi
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,7 +19,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from flask import Flask, json, jsonify
+from flask import Flask, json, jsonify, request
 
 __author__ = 'Xuanrui Qi & Yaoxian Qu'
 
@@ -28,6 +28,17 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     return jsonify(body="Hello, world!")
+
+
+@app.route('/users/<username>', methods = ['GET'])
+def getPersonality(username):
+	#calculate personality using request.data
+
+	#update personality using username
+
+	#calculate recommendation with k-means
+
+	return recommendation
 
 if __name__ == '__main__':
     app.run()
