@@ -58,17 +58,17 @@ def getPersonality(username):
     content = {"contentItems" : tweets}
     content = json.dumps(content)
     # print tweets
-    # try:
-    #     personality = requests.post("https://gateway.watsonplatform.net/personality-insights/api/v2/profile", headers = {"Content-Type": "application/json"}, data = content, auth = ("9ee0234a-22c9-4144-87f9-a8b633bfc64c", "kDr5XgKT8mGh"))
-    # except Exception as e:
-    #     print e
-    # else:
-    #     print "no error here"
+    try:
+        personality = requests.post("https://gateway.watsonplatform.net/personality-insights/api/v2/profile", headers = {"Content-Type": "application/json"}, data = content, auth = ("9ee0234a-22c9-4144-87f9-a8b633bfc64c", "kDr5XgKT8mGh"))
+    except Exception as e:
+        print e
+    else:
+        print "no error here"
 
-    # # personality = json.loads(personality)
-    # personality = json.loads(personality.text)
-    # #update personality using username
-    # users_ref.patch({username: personality});
+    # personality = json.loads(personality)
+    personality = json.loads(personality.text)
+    #update personality using username
+    users_ref.patch({username: personality});
 
     clustering = get_clusters(users_ref)
 
@@ -86,7 +86,7 @@ def getPersonality(username):
                 user_pos = i
 
     for i, cluster_label in enumerate(clustering.labels_):
-        if(cluster_label == clustering.labels_[user_pos] and i != 0):
+        if(cluster_label == clustering.labels_[user_pos] and i != user_pos):
             rec_list_loc.append(i)
 
     for i in rec_list_loc:
