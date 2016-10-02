@@ -19,10 +19,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import requests
+import pprint
 from flask import Flask, json, jsonify, request, render_template
 from firebase import Firebase
 from firebase_token_generator import create_token
 from crossdomain import crossdomain
+from recommendation import get_clusters
 
 __author__ = 'Xuanrui Qi & Yaoxian Qu'
 
@@ -66,13 +68,32 @@ def getPersonality(username):
 	# personality = json.loads(personality)
 	personality = json.loads(personality.text)
 	#update personality using username
-
 	users_ref.patch({username: personality});
 
+	clustering = get_clusters(users_ref)
 
 	# #calculate recommendation with k-means
+	all_users = users_ref.get()
+    values_arr = [ {key: all_users[key]["tree"]["children"][2]["children"][0]["children"]} for key in all_users]
+    
+    rec_list_loc = []
+    rec_list = []
+    #assume current user is on line 0, have to find out actual user position
 
-	return "laji"
+    for i in range(values_arr):
+    	for key in values_arr[i]:
+    		if(key == username):
+    			user_pos = i
+
+    for i, cluster_label in enumerate(clustering.labels_):
+        if(cluster_label == clustering.labels_[user_pos] and i != 0):
+            rec_list_loc.append(i)
+
+    for i in rec_list_loc:
+        for key in values_arr[i]:
+            rec_list.append(key)
+
+	return rec_list
 
 if __name__ == '__main__':
     app.run()
