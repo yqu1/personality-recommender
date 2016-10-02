@@ -18,12 +18,29 @@
 # LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-from flask import Flask, json, jsonify, request
+import requests
+from flask import Flask, json, jsonify, request, render_template
+from firebase import Firebase
+from firebase_token_generator import create_token
+from crossdomain import crossdomain
 
 __author__ = 'Xuanrui Qi & Yaoxian Qu'
 
 app = Flask(__name__)
+
+base_url = "https://personality-recommender-80814.firebaseio.com/"
+users_url = base_url + 'users'
+
+auth_payload = {"uid": "lfeqCjaPdHdML4Jtgri23RFVzBm1"}
+secret_key = "1G8cEGmnVLb20kWnpkmac3cSvEy1NZKJu0BJ0pRR"
+options = {
+	"debug": True,
+	"admin": True
+}
+
+token = create_token(secret_key, auth_payload, options)
+ref = Firebase(base_url, auth_token = token)
+users_ref = Firebase(users_url, auth_token = token)
 
 @app.route('/')
 def hello():
@@ -31,14 +48,31 @@ def hello():
 
 
 @app.route('/users/<username>', methods = ['GET'])
+@crossdomain(origin='*')
 def getPersonality(username):
+	tweets = request.args.get("usertweet")
+	tweets = json.loads(tweets)
 	#calculate personality using request.data
+	content = {"contentItems" : tweets}
+	content = json.dumps(content)
+	# print tweets
+	try:
+		personality = requests.post("https://gateway.watsonplatform.net/personality-insights/api/v2/profile", headers = {"Content-Type": "application/json"}, data = content, auth = ("9ee0234a-22c9-4144-87f9-a8b633bfc64c", "kDr5XgKT8mGh"))
+	except Exception as e:
+		print e
+	else:
+		print "no error here"
 
+	# personality = json.loads(personality)
+	personality = json.loads(personality.text)
 	#update personality using username
 
-	#calculate recommendation with k-means
+	users_ref.patch({username: personality});
 
-	return recommendation
+
+	# #calculate recommendation with k-means
+
+	return "laji"
 
 if __name__ == '__main__':
     app.run()
