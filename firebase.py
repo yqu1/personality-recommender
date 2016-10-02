@@ -9,7 +9,7 @@ from random import choice
 from string import ascii_uppercase
 import json
 
-#test clustering with random data
+#test clustering with random data, do not execute
 
 
 base_url = "https://personality-recommender-80814.firebaseio.com/"
@@ -32,11 +32,11 @@ if __name__ == '__main__':
     data = users_ref.get()
     sample = data['qu yaoxian']
     pprint.pprint(data)
-    for i in range(90):
-        name = ''.join(choice(ascii_uppercase) for i in range(12))
-        for i in range(5):
-            sample["tree"]["children"][2]["children"][0]["children"][i]["percentage"] = random.uniform(0, 1)
-        users_ref.patch({name: sample})
+    # for i in range(90):
+    #     name = ''.join(choice(ascii_uppercase) for i in range(12))
+    #     for i in range(5):
+    #         sample["tree"]["children"][2]["children"][0]["children"][i]["percentage"] = random.uniform(0, 1)
+    #     users_ref.patch({name: sample})
 
     # all_users = users_ref.get()
     # values_arr = [ {key: all_users[key]["tree"]["children"][2]["children"][0]["children"]} for key in all_users]
