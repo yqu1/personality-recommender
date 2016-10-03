@@ -7,7 +7,7 @@ Yaoxian Qu <quyaoxian@gmail.com> and Xuanrui Qi <me@xuanruiqi.com>.
 ## License
 MIT License. See "LICENSE" file for details.
 
-Backend for personality recommender app. Calculates user personality with watson personality insights API and determines recommendations with k-means clustering.
+Backend for personality recommender app. Calculates user personality with watson personality insights API and determines recommendations with k-means clustering. Run locally on port 5000.
 
 About personality recommender:
 
