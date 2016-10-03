@@ -78,7 +78,6 @@ def getPersonality(username):
     rec_list_loc = []
     rec_list = []
 
-    print pprint.pprint(values_arr)
     num_users = len(values_arr)
     for i in range(num_users):
         for key in values_arr[i]:
@@ -88,6 +87,8 @@ def getPersonality(username):
     for i, cluster_label in enumerate(clustering.labels_):
         if(cluster_label == clustering.labels_[user_pos] and i != user_pos):
             rec_list_loc.append(i)
+
+    print user_pos
 
     for i in rec_list_loc:
         for key in values_arr[i]:

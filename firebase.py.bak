@@ -83,7 +83,7 @@ if __name__ == '__main__':
     k = int(num_users / 10) + 2
     kmeans = KMeans(n_clusters = k)
     clustering = kmeans.fit(values_m.tocsr())
-
+    
     rec_list_loc = []
     rec_list = []
     #assume current user is on line 0, have to find out actual user position
@@ -96,3 +96,5 @@ if __name__ == '__main__':
             rec_list.append(key)
 
     print(rec_list)
+
+

@@ -16,14 +16,15 @@ def get_clusters(users_ref):
     values_m = dok_matrix((num_users, num_features), dtype=np.float32)
 
     for i in range(num_users):
-        for j in range(num_features):
-            for key in values_arr[i]:
-                values_m[i, j] = values_arr[i][key][j]["percentage"];
-
+    	for j in range(num_features):
+    		for key in values_arr[i]:
+    			values_m[i, j] = values_arr[i][key][j]["percentage"];
+	
     k = int(num_users / 10) + 2
-
-
+    
+    print num_users
+	
     kmeans = KMeans(n_clusters = k)
 
-    clustering = kmeans.fit(values_m.tocsr())
-    return clustering
+	clustering = kmeans.fit(values_m.tocsr())
+	return clustering
